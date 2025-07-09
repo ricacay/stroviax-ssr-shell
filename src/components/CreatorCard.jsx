@@ -36,45 +36,54 @@ const CreatorCard = ({ name, bio, avatar, xrpAddress }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 w-full max-w-sm">
+    <div
+      className="flex flex-col items-center p-6 rounded-2xl shadow-md bg-white dark:bg-gray-800 transition-transform transform hover:scale-105 hover:shadow-lg"
+    >
       <img
-        src={avatar}
+        src={avatar || "/default-avatar.png"}
         alt={`${name}'s avatar`}
-        className="w-24 h-24 rounded-full mx-auto shadow-md"
+        onError={(e) => (e.target.src = "/default-avatar.png")}
+        className="w-24 h-24 rounded-full object-cover shadow-md"
       />
-      <h2 className="text-xl font-semibold text-center mt-4">{name}</h2>
+
+      <h2 className="text-xl font-semibold text-center mt-4 dark:text-white">
+        {name}
+      </h2>
+
       <p className="text-center text-sm text-gray-500 dark:text-gray-300 mb-4">
         {bio}
       </p>
 
       {isConnected ? (
-        <div className="flex flex-col space-y-2">
-          <input
-            type="number"
-            placeholder="Amount in XRP"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            className="px-3 py-2 rounded border dark:bg-gray-700 border-gray-300 dark:border-gray-600"
-          />
-          <button
-            onClick={handleTip}
-            disabled={status === "loading"}
-            className={`py-2 rounded shadow text-white transition ${
-              status === "success"
-                ? "bg-green-500"
+        <div className="flex flex-col w-full">
+          <div className="flex items-center gap-2 mt-3">
+            <input
+              type="number"
+              placeholder="Amount (XRP)"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="flex-1 px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            />
+            <button
+              onClick={handleTip}
+              disabled={status === "loading"}
+              className={`px-4 py-2 rounded-lg shadow transition-colors ${
+                status === "success"
+                  ? "bg-green-500 hover:bg-green-600"
+                  : status === "fail"
+                  ? "bg-red-500 hover:bg-red-600"
+                  : "bg-blue-600 hover:bg-blue-700 text-white"
+              }`}
+            >
+              {status === "loading"
+                ? "Sending..."
+                : status === "success"
+                ? "✅ Tip Sent!"
                 : status === "fail"
-                ? "bg-red-500"
-                : "bg-blue-500 hover:bg-blue-600"
-            }`}
-          >
-            {status === "loading"
-              ? "Sending..."
-              : status === "success"
-              ? "✅ Tip Sent!"
-              : status === "fail"
-              ? "❌ Failed"
-              : "💸 Send Tip"}
-          </button>
+                ? "❌ Failed"
+                : "💸 Send Tip"}
+            </button>
+          </div>
         </div>
       ) : (
         <p className="text-center text-red-500 mt-4">Connect wallet to tip</p>
