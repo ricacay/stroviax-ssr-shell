@@ -1,9 +1,6 @@
-/* src/index.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* tailwindcss */
+@import "tailwindcss";
 
-/* Optional: base body styling */
 body {
   @apply font-sans text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-900;
 }
