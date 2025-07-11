@@ -1,16 +1,10 @@
 import { useEffect, useState } from "react";
 import { useWalletStore } from "../store/walletStore";
 
-let xumm = null;
-
 export const useXamanAuth = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [client, setClient] = useState(null);
-  const {
-    walletAddress,
-    setWalletAddress,
-    clearWalletAddress,
-  } = useWalletStore();
+  const { walletAddress, setWalletAddress, clearWalletAddress } = useWalletStore();
 
   useEffect(() => {
     const init = async () => {
@@ -24,25 +18,21 @@ export const useXamanAuth = () => {
       });
 
       setClient(app);
-
-      // Try to restore session
-      const isAuthorized = await app.isAuthorized();
-      if (isAuthorized) {
-        const user = await app.user();
-        if (user?.sub) {
-          setWalletAddress(user.sub);
-        }
-      }
-
-      setLoading(false);
     };
 
     init();
-  }, [setWalletAddress]);
+  }, []);
 
   const login = async () => {
     if (!client) return;
-    await client.authorize();
+
+    const token = await client.authorize(); // triggers login popup
+    if (token?.access_token) {
+      const user = await client.user();
+      if (user?.sub) {
+        setWalletAddress(user.sub);
+      }
+    }
   };
 
   const logout = async () => {
