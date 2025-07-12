@@ -1,0 +1,24 @@
+// src/data/mockTips.js
+export const mockTips = [
+  {
+    id: 1,
+    creator: "artbyzoe",
+    amount: 8,
+    from: "rXa1...zY2q",
+    timestamp: "2025-07-12T14:23:00Z",
+  },
+  {
+    id: 2,
+    creator: "djmiles",
+    amount: 12,
+    from: "rFbc...8W9k",
+    timestamp: "2025-07-12T13:10:00Z",
+  },
+  {
+    id: 3,
+    creator: "artbyzoe",
+    amount: 4,
+    from: "rXa1...zY2q",
+    timestamp: "2025-07-11T17:00:00Z",
+  },
+];
