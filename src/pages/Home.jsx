@@ -24,6 +24,18 @@ const Home = () => {
     fetchCreators();
   }, []);
 
+  // TEMP fallback for blank API
+  const fallback = [
+    {
+      _id: "1",
+      username: "artbyzoe",
+      avatar: "/default-avatar.png",
+      bio: "Digital painter & NFT enthusiast",
+    },
+  ];
+
+  const displayList = creators.length > 0 ? creators : fallback;
+
   return (
     <div className="min-h-screen py-10 px-6 bg-white dark:bg-gray-900">
       <h1 className="text-4xl font-bold text-center mb-10 text-gray-800 dark:text-white">
@@ -36,14 +48,10 @@ const Home = () => {
         </p>
       ) : error ? (
         <p className="text-center text-red-500 dark:text-red-400">{error}</p>
-      ) : creators.length === 0 ? (
-        <p className="text-center text-gray-400 dark:text-gray-500">
-          No creators available.
-        </p>
       ) : (
         <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
-          {creators.map((creator) => (
-            <CreatorCard key={creator._id} {...creator} />
+          {displayList.map((creator) => (
+            <CreatorCard key={creator._id || creator.username} creator={creator} />
           ))}
         </div>
       )}

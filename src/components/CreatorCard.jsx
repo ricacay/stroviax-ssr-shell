@@ -1,12 +1,13 @@
+import React from "react";
 import { useState } from "react";
-import { useWallet } from "@/wallet/WalletProvider";
+import { useWallet } from "../wallet/WalletProvider";
 import { toast } from "react-toastify";
 
 export default function CreatorCard({ creator }) {
   const { isConnected, walletAddress } = useWallet();
   const [tipAmount, setTipAmount] = useState("");
   const [sending, setSending] = useState(false);
-  const [tipHistory, setTipHistory] = useState([]); // 🆕 New state
+  const [tipHistory, setTipHistory] = useState([]);
 
   const handleTip = async () => {
     const amount = parseFloat(tipAmount);
@@ -23,18 +24,17 @@ export default function CreatorCard({ creator }) {
 
     setSending(true);
 
-    // Simulate sending
+    // Simulated tip
     setTimeout(() => {
-      toast.success(`✅ Sent ${amount} XRP to @${creator.username}`);
+      toast.success(`✅ Sent ${amount} XRP to @${creator?.username || "unknown"}`);
 
-      // Save to local history
       setTipHistory((prev) => [
         {
           id: Date.now(),
           amount,
           from: walletAddress,
         },
-        ...prev.slice(0, 4), // limit to last 5 tips
+        ...prev.slice(0, 4),
       ]);
 
       setSending(false);
@@ -47,16 +47,16 @@ export default function CreatorCard({ creator }) {
       {/* Header */}
       <div className="flex items-center space-x-4 mb-4">
         <img
-          src={creator.avatar || "/default-avatar.png"}
-          alt={creator.username}
+          src={creator?.avatar || "/default-avatar.png"}
+          alt={creator?.username || "Creator"}
           className="w-14 h-14 rounded-full object-cover"
         />
         <div>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-            @{creator.username}
+            @{creator?.username || "unknown"}
           </h3>
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            {creator.bio || "Support my content with XRP ❤️"}
+            {creator?.bio || "Support my content with XRP ❤️"}
           </p>
         </div>
       </div>
@@ -95,7 +95,7 @@ export default function CreatorCard({ creator }) {
             >
               <span>✔️ {tip.amount} XRP</span>
               <span className="font-mono text-xs">
-                {tip.from.slice(0, 5)}...{tip.from.slice(-4)}
+                {tip.from?.slice(0, 5)}...{tip.from?.slice(-4)}
               </span>
             </div>
           ))}
