@@ -14,14 +14,19 @@ export const useXamanAuth = () => {
       try {
         const { XummPkce } = await import("xumm-oauth2-pkce");
 
-        const app = new XummPkce({
-          clientId: import.meta.env.VITE_XUMM_CLIENT_ID,
-          redirectUrl: window.location.origin,
-        });
+        const redirectUrl =
+          import.meta.env.VITE_XUMM_REDIRECT_URL || `${window.location.origin}/callback`;
 
+        const app = new XummPkce(
+          import.meta.env.VITE_XAMAN_CLIENT_ID,
+          {
+            redirectUrl,
+         
+          }
+        );
         setClient(app);
 
-        // Auto-authorize if possible
+        // Auto-authorize if already authenticated
         const state = await app.state();
         if (state?.me?.sub) {
           setWalletAddress(state.me.sub);

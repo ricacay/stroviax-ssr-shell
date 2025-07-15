@@ -1,13 +1,15 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useWallet } from "../wallet/WalletProvider";
 import { toast } from "react-toastify";
+import { useTipStore } from "../store/useTipStore";
 
 export default function CreatorCard({ creator }) {
   const { isConnected, walletAddress } = useWallet();
   const [tipAmount, setTipAmount] = useState("");
   const [sending, setSending] = useState(false);
   const [tipHistory, setTipHistory] = useState([]);
+
+  const { addTip: logGlobalTip } = useTipStore();
 
   const handleTip = async () => {
     const amount = parseFloat(tipAmount);
@@ -24,18 +26,25 @@ export default function CreatorCard({ creator }) {
 
     setSending(true);
 
-    // Simulated tip
+    // Simulated async tip
     setTimeout(() => {
       toast.success(`✅ Sent ${amount} XRP to @${creator?.username || "unknown"}`);
 
-      setTipHistory((prev) => [
-        {
-          id: Date.now(),
-          amount,
-          from: walletAddress,
-        },
-        ...prev.slice(0, 4),
-      ]);
+      const newTip = {
+        id: Date.now(),
+        amount,
+        from: walletAddress,
+      };
+
+      // Add to local tip history (on this card)
+      setTipHistory((prev) => [newTip, ...prev.slice(0, 4)]);
+
+      // Add to global tip history (for TipFeed)
+      logGlobalTip({
+        amount,
+        from: walletAddress,
+        creator: creator?.username || "unknown",
+      });
 
       setSending(false);
       setTipAmount("");

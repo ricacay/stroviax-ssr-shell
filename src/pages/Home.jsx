@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CreatorCard from "../components/CreatorCard";
+import TipFeed from "../components/TipFeed"; // 🆕 Import the new feed
 
 const Home = () => {
   const [creators, setCreators] = useState([]);
@@ -49,11 +50,16 @@ const Home = () => {
       ) : error ? (
         <p className="text-center text-red-500 dark:text-red-400">{error}</p>
       ) : (
-        <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center">
-          {displayList.map((creator) => (
-            <CreatorCard key={creator._id || creator.username} creator={creator} />
-          ))}
-        </div>
+        <>
+          <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center mb-12">
+            {displayList.map((creator) => (
+              <CreatorCard key={creator._id || creator.username} creator={creator} />
+            ))}
+          </div>
+
+          {/* 🆕 Tip Activity Feed */}
+          <TipFeed />
+        </>
       )}
     </div>
   );
