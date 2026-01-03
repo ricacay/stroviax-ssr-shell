@@ -14,9 +14,13 @@
   "description": "",
   "dependencies": {
     "lucide-react": "^0.525.0",
+    "react": "^19.2.0",
+    "lucide-react": "^0.548.0",
     "react": "^19.1.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.7.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.9.4",
     "react-toastify": "^11.0.5",
     "recharts": "^3.1.0",
     "xumm-oauth2-pkce": "^2.8.7",
@@ -28,6 +32,6 @@
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.11",
-    "vite": "^6.3.5"
+    "vite": "^6.3.6"
   }
 }
